@@ -8,7 +8,8 @@ extends MeshInstance3D
 		gen_chunk()
 
 @export var chunk_size : int = 16
-@export var threshold : float = -0.56
+@export var seed : int = 1
+@export 	var max_height : int = 30
 
 enum BlockType {Air, Dirt}
 
@@ -34,19 +35,18 @@ func _process(delta: float) -> void:
 	
 func init_block_array():
 	var noise = FastNoiseLite.new()
-	noise.seed = 1
-	noise.noise_type = FastNoiseLite.TYPE_CELLULAR
+	noise.seed = seed
+	noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	blocks.resize(chunk_size)
+
 	for x in range(chunk_size):
 		blocks[x] = []
 		for y in range(chunk_size):
 			blocks[x].append([])
 			for z in range(chunk_size):
-				var noiseval = noise.get_noise_3d(x,y,z)
-
-				if noiseval > threshold:
-					print(noiseval)
+				var noiseval = (int)(noise.get_noise_2d(x,z) * -max_height) % max_height
+				if (y - 3) <= noiseval:
 					blocks[x][y].append(BlockType.Dirt)
 				else:
 					blocks[x][y].append(BlockType.Air)
