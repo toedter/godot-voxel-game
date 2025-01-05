@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0qk7ncocb8bm"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_vt8vq"]
+
+[node name="Voxel-Game" type="Node3D"]
+
+[node name="World" type="MeshInstance3D" parent="."]
+script = ExtResource("1_vt8vq")
